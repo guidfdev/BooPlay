@@ -259,7 +259,7 @@
 </script>
 
 <SEO
-	title="Market - XprismPlay"
+	title="Market - BooPlay"
 	description="Discover and trade virtual cryptocurrencies in our simulation game. Browse all available simulated coins, filter by price and performance, and more."
 	keywords="virtual cryptocurrency market, crypto trading game, coin discovery simulation, market analysis game, trading practice"
 />

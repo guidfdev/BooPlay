@@ -141,7 +141,7 @@
 						<Button
 							variant="outline"
 							size="sm"
-							href="https://github.com/xprismplay/BooPlay"
+							href="https://github.com/xprismplay/XPrismPlay"
 							target="_blank"
 							rel="noopener"
 						>
@@ -151,7 +151,7 @@
 						<Button
 							variant="outline"
 							size="sm"
-							href="https://github.com/xprismplay/BooPlay"
+							href="https://github.com/1boongie/BooPlay"
 							target="_blank"
 							rel="noopener"
 						>

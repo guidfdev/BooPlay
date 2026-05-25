@@ -138,8 +138,8 @@
 </script>
 
 <SEO
-	title="Achievements - XprismPlay"
-	description="Track your progress and unlock achievements in the XprismPlay crypto trading simulator. Complete challenges to earn rewards."
+	title="Achievements - BooPlay"
+	description="Track your progress and unlock achievements in the BooPlay crypto trading simulator. Complete challenges to earn rewards."
 	keywords="crypto game achievements, trading simulator challenges, virtual trading rewards"
 />
 

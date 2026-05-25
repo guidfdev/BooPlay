@@ -326,7 +326,7 @@
 	let userWeeklyTickets = $derived(weekly?.userTickets ?? []);
 </script>
 
-<SEO title="{$_('page_names.lottery')} - XprismPlay" description={$_('lottery.seo_description')} />
+<SEO title="{$_('page_names.lottery')} - BooPlay" description={$_('lottery.seo_description')} />
 <SignInConfirmDialog bind:open={shouldSignIn} />
 
 <div class="container mx-auto max-w-5xl p-6">

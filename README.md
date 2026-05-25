@@ -1,6 +1,6 @@
-<img style="width: 128px; height: 128px" src="website/static/favicon.svg" /><h1 style="font-size: 48px"><a href="https://xprismplay.dpdns.org">xprismplay.dpdns.org</a> - the fake crypto simulator.</h1>
+<img style="width: 128px; height: 128px" src="website/static/favicon.svg" /><h1 style="font-size: 48px"><a href="https://booplay.fun">booplay.fun</a> - the fake crypto simulator.</h1>
 
-[Privacy Policy](https://xprismplay.dpdns.org/legal/privacy) | [Terms of Service](https://xprismplay.dpdns.org/legal/terms) | [License](LICENSE) | [YouTube video](https://www.youtube.com/watch?v=nRUkvPMphRc)
+[Privacy Policy](https://booplay.fun/legal/privacy) | [Terms of Service](https://booplay.fun/legal/terms) | [License](LICENSE) | [YouTube video](https://www.youtube.com/watch?v=nRUkvPMphRc)
 
 ## About
 
@@ -33,7 +33,7 @@ Before you begin, make sure you have the following installed:
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/outpoot/BooPlay.git
+   git clone https://github.com/1boongie/BooPlay.git
    cd BooPlay
    ```
 

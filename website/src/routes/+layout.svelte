@@ -96,7 +96,6 @@
 			'/live': $_('page_names.live_trades'),
 			'/treemap': $_('page_names.treemap'),
 			'/about': $_('page_names.about'),
-			'/ads': 'Support Xprism',
 			'/legal/privacy': 'Privacy Policy',
 			'/legal/terms': 'Terms of Service',
 			'/shop': $_('page_names.shop')
