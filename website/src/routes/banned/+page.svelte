@@ -23,7 +23,7 @@
 			</p>
 			<p class="text-muted-foreground text-sm">
 				If you believe this is an error, <a
-					href="https://discord.gg/HKZ7EQEgaZ"
+					href="https://discord.gg/JGT4JJv5M7"
 					class="text-primary underline">please contact support</a
 				>. You can also email support at <b>me.boongie@proton.me</b> if you cannot access the discord.
 			</p>

@@ -55,8 +55,11 @@
 
 	$effect(() => {
 		profileData = data.profileData;
-		profileFeedback =
-			data.profileData?.feedback ?? { likesCount: 0, dislikesCount: 0, userReaction: null };
+		profileFeedback = data.profileData?.feedback ?? {
+			likesCount: 0,
+			dislikesCount: 0,
+			userReaction: null
+		};
 		recentTransactions = data.recentTransactions;
 	});
 
@@ -74,7 +77,9 @@
 		if (currentReaction === reaction) {
 			return {
 				likesCount:
-					reaction === 'LIKE' ? Math.max(0, profileFeedback.likesCount - 1) : profileFeedback.likesCount,
+					reaction === 'LIKE'
+						? Math.max(0, profileFeedback.likesCount - 1)
+						: profileFeedback.likesCount,
 				dislikesCount:
 					reaction === 'DISLIKE'
 						? Math.max(0, profileFeedback.dislikesCount - 1)
@@ -88,7 +93,9 @@
 				likesCount:
 					reaction === 'LIKE' ? profileFeedback.likesCount + 1 : profileFeedback.likesCount,
 				dislikesCount:
-					reaction === 'DISLIKE' ? profileFeedback.dislikesCount + 1 : profileFeedback.dislikesCount,
+					reaction === 'DISLIKE'
+						? profileFeedback.dislikesCount + 1
+						: profileFeedback.dislikesCount,
 				userReaction: reaction
 			};
 		}
@@ -219,8 +226,11 @@
 			const response = await fetch(`/api/user/${username}`);
 			if (response.ok) {
 				profileData = await response.json();
-				profileFeedback =
-					profileData?.feedback ?? { likesCount: 0, dislikesCount: 0, userReaction: null };
+				profileFeedback = profileData?.feedback ?? {
+					likesCount: 0,
+					dislikesCount: 0,
+					userReaction: null
+				};
 				recentTransactions = profileData?.recentTransactions || [];
 			} else {
 				toast.error('Failed to load profile data');
@@ -588,40 +598,46 @@
 						</div>
 					</div>
 					{#if $USER_DATA && !isOwnProfile}
-
-								<Tooltip.Root>
-									<Tooltip.Trigger>
-										<Button
-											variant={isBlocked ? 'outline' : 'ghost'}
-											size="icon"
-											onclick={toggleBlock}
-											disabled={blockLoading}
-											class="h-8 w-8 {isBlocked
-												? 'text-destructive'
-												: 'text-muted-foreground hover:text-destructive'}"
-										>
-											<HugeiconsIcon icon={UnavailableIcon} class="h-4 w-4" />
-										</Button>
-									</Tooltip.Trigger>
-									<Tooltip.Content>{isBlocked ? 'Unblock' : 'Block'}</Tooltip.Content>
-								</Tooltip.Root>
+						<Tooltip.Root>
+							<Tooltip.Trigger>
+								<Button
+									variant={isBlocked ? 'outline' : 'ghost'}
+									size="icon"
+									onclick={toggleBlock}
+									disabled={blockLoading}
+									class="h-8 w-8 {isBlocked
+										? 'text-destructive'
+										: 'text-muted-foreground hover:text-destructive'}"
+								>
+									<HugeiconsIcon icon={UnavailableIcon} class="h-4 w-4" />
+								</Button>
+							</Tooltip.Trigger>
+							<Tooltip.Content>{isBlocked ? 'Unblock' : 'Block'}</Tooltip.Content>
+						</Tooltip.Root>
+					{/if}
+					{#if $USER_DATA}
 						<div class="ml-auto flex flex-col items-end gap-2 self-start">
 							<Tooltip.Provider>
-								<div class="bg-muted/30 border-border/70 flex items-center gap-1 rounded-full border p-1">
+								<div
+									class="bg-muted/30 border-border/70 flex items-center gap-1 rounded-full border p-1"
+								>
 									<Tooltip.Root>
 										<Tooltip.Trigger>
 											<Button
 												variant="ghost"
 												size="sm"
-												disabled={reactionLoading}
-												onclick={() => toggleProfileReaction('LIKE')}
-												class="flex h-8 items-center gap-1 px-3 {profileFeedback.userReaction === 'LIKE'
+												disabled={isOwnProfile || reactionLoading}
+												onclick={() => !isOwnProfile && toggleProfileReaction('LIKE')}
+												class="flex h-8 items-center gap-1 px-3 {profileFeedback.userReaction ===
+												'LIKE'
 													? 'text-success hover:text-success'
 													: 'text-muted-foreground hover:text-foreground'}"
 											>
 												<HugeiconsIcon
 													icon={ThumbsUpIcon}
-													class="h-4 w-4 {profileFeedback.userReaction === 'LIKE' ? 'fill-current' : ''}"
+													class="h-4 w-4 {profileFeedback.userReaction === 'LIKE'
+														? 'fill-current'
+														: ''}"
 												/>
 												{#if profileFeedback.likesCount > 0}
 													<span class="text-xs font-medium">{profileFeedback.likesCount}</span>
@@ -636,15 +652,18 @@
 											<Button
 												variant="ghost"
 												size="sm"
-												disabled={reactionLoading}
-												onclick={() => toggleProfileReaction('DISLIKE')}
-												class="flex h-8 items-center gap-1 px-3 {profileFeedback.userReaction === 'DISLIKE'
+												disabled={isOwnProfile || reactionLoading}
+												onclick={() => !isOwnProfile && toggleProfileReaction('DISLIKE')}
+												class="flex h-8 items-center gap-1 px-3 {profileFeedback.userReaction ===
+												'DISLIKE'
 													? 'text-red-600 hover:text-red-500'
 													: 'text-muted-foreground hover:text-foreground'}"
 											>
 												<HugeiconsIcon
 													icon={ThumbsDownIcon}
-													class="h-4 w-4 {profileFeedback.userReaction === 'DISLIKE' ? 'fill-current' : ''}"
+													class="h-4 w-4 {profileFeedback.userReaction === 'DISLIKE'
+														? 'fill-current'
+														: ''}"
 												/>
 												{#if profileFeedback.dislikesCount > 0}
 													<span class="text-xs font-medium">{profileFeedback.dislikesCount}</span>
@@ -654,7 +673,6 @@
 										<Tooltip.Content>Dislike profile</Tooltip.Content>
 									</Tooltip.Root>
 								</div>
-
 							</Tooltip.Provider>
 						</div>
 					{/if}

@@ -49,7 +49,7 @@
 			{message}
 		</p>
 		<div class="flex flex-col">
-			<Button variant="link" href="https://discord.gg/HKZ7EQEgaZ" target="_blank">@Discord</Button>
+			<Button variant="link" href="https://discord.gg/JGT4JJv5M7" target="_blank">@Discord</Button>
 		</div>
 	</div>
 
