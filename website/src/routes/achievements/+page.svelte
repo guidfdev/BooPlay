@@ -1,168 +1,158 @@
 <script lang="ts">
-import { Award05Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/svelte";
-import { onMount } from "svelte";
-import { _ } from "svelte-i18n";
-import { toast } from "svelte-sonner";
-import SEO from "$lib/components/self/SEO.svelte";
-import { Badge } from "$lib/components/ui/badge";
-import { Button } from "$lib/components/ui/button";
-import * as Card from "$lib/components/ui/card";
-import {
-	ACHIEVEMENT_CATEGORIES,
-	type AchievementCategory,
-	type AchievementDef,
-	DIFFICULTY_CLASS,
-} from "$lib/data/achievements";
-import { NEW_ACHIEVEMENTS_COUNT } from "$lib/stores/achievements";
-import { fetchGemsBalance } from "$lib/stores/gems";
-import { fetchPortfolioSummary } from "$lib/stores/portfolio-data";
-import { formatValue } from "$lib/utils";
+	import { Award05Icon } from '@hugeicons/core-free-icons';
+	import { HugeiconsIcon } from '@hugeicons/svelte';
+	import { onMount } from 'svelte';
+	import { _ } from 'svelte-i18n';
+	import { toast } from 'svelte-sonner';
+	import SEO from '$lib/components/self/SEO.svelte';
+	import { Badge } from '$lib/components/ui/badge';
+	import { Button } from '$lib/components/ui/button';
+	import * as Card from '$lib/components/ui/card';
+	import {
+		ACHIEVEMENT_CATEGORIES,
+		type AchievementCategory,
+		type AchievementDef,
+		DIFFICULTY_CLASS
+	} from '$lib/data/achievements';
+	import { NEW_ACHIEVEMENTS_COUNT } from '$lib/stores/achievements';
+	import { fetchGemsBalance } from '$lib/stores/gems';
+	import { fetchPortfolioSummary } from '$lib/stores/portfolio-data';
+	import { formatValue } from '$lib/utils';
 
-interface AchievementWithStatus extends AchievementDef {
-	unlocked: boolean;
-	unlockedAt: string | null;
-	claimed: boolean;
-	progress: number | null;
-}
-
-let achievements = $state<AchievementWithStatus[]>([]);
-let loading = $state(true);
-let claimingId = $state<string | null>(null);
-let claimingAll = $state(false);
-let selectedCategory = $state<AchievementCategory | "all">("all");
-
-const totalClaimed = $derived(achievements.filter((a) => a.claimed).length);
-const totalAchievements = $derived(achievements.length);
-const unclaimedCount = $derived(
-	achievements.filter((a) => a.unlocked && !a.claimed).length,
-);
-const filteredAchievements = $derived(
-	selectedCategory === "all"
-		? achievements
-		: achievements.filter((a) => a.category === selectedCategory),
-);
-
-const groupedAchievements = $derived.by(() => {
-	const groups: {
-		category: AchievementCategory;
-		items: AchievementWithStatus[];
-	}[] = [];
-	const cats =
-		selectedCategory === "all" ? ACHIEVEMENT_CATEGORIES : [selectedCategory];
-	for (const cat of cats) {
-		const items = achievements.filter((a) => a.category === cat);
-		if (items.length > 0) {
-			groups.push({ category: cat, items });
-		}
+	interface AchievementWithStatus extends AchievementDef {
+		unlocked: boolean;
+		unlockedAt: string | null;
+		claimed: boolean;
+		progress: number | null;
 	}
-	return groups;
-});
 
-function difficultyLabel(difficulty: AchievementDef["difficulty"]) {
-	return $_(`achievements.difficulties.${difficulty}`);
-}
+	let achievements = $state<AchievementWithStatus[]>([]);
+	let loading = $state(true);
+	let claimingId = $state<string | null>(null);
+	let claimingAll = $state(false);
+	let selectedCategory = $state<AchievementCategory | 'all'>('all');
 
-function categoryLabel(category: AchievementCategory | "all") {
-	return $_(`achievements.categories.${category}`);
-}
+	const totalClaimed = $derived(achievements.filter((a) => a.claimed).length);
+	const totalAchievements = $derived(achievements.length);
+	const unclaimedCount = $derived(achievements.filter((a) => a.unlocked && !a.claimed).length);
+	const filteredAchievements = $derived(
+		selectedCategory === 'all'
+			? achievements
+			: achievements.filter((a) => a.category === selectedCategory)
+	);
 
-function rewardDescription(cashReward: number, gemReward: number) {
-	return $_("achievements.reward_description").replace("{{cash}}", formatValue(cashReward)).replace("{{gems}}", gemReward.toString());
-}
-
-function achievementText(
-	achievement: AchievementDef,
-	part: "name" | "description",
-) {
-	const key = `achievements.items.${achievement.id}.${part}`;
-	const translated = $_(key);
-	return translated === key ? achievement[part] : translated;
-}
-
-onMount(async () => {
-	try {
-		const res = await fetch("/api/achievements");
-		if (res.ok) {
-			const data = await res.json();
-			achievements = data.achievements;
-			NEW_ACHIEVEMENTS_COUNT.set(data.unclaimedCount ?? 0);
-		} else {
-			toast.error($_("achievements.errors.load"));
+	const groupedAchievements = $derived.by(() => {
+		const groups: {
+			category: AchievementCategory;
+			items: AchievementWithStatus[];
+		}[] = [];
+		const cats = selectedCategory === 'all' ? ACHIEVEMENT_CATEGORIES : [selectedCategory];
+		for (const cat of cats) {
+			const items = achievements.filter((a) => a.category === cat);
+			if (items.length > 0) {
+				groups.push({ category: cat, items });
+			}
 		}
-	} catch {
-		toast.error($_("achievements.errors.load"));
-	} finally {
-		loading = false;
-	}
-});
+		return groups;
+	});
 
-async function claimAchievement(achievementId: string) {
-	claimingId = achievementId;
-	try {
-		const res = await fetch("/api/achievements/claim", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ achievementId }),
-		});
-		if (res.ok) {
-			const data = await res.json();
-			achievements = achievements.map((a) =>
-				a.id === achievementId ? { ...a, claimed: true } : a,
-			);
-			NEW_ACHIEVEMENTS_COUNT.set(unclaimedCount);
-			toast.success($_("achievements.reward_claimed"), {
-				description: rewardDescription(data.cashReward, data.gemReward),
+	function difficultyLabel(difficulty: AchievementDef['difficulty']) {
+		return $_(`achievements.difficulties.${difficulty}`);
+	}
+
+	function categoryLabel(category: AchievementCategory | 'all') {
+		return $_(`achievements.categories.${category}`);
+	}
+
+	function rewardDescription(cashReward: number, gemReward: number) {
+		return $_('achievements.reward_description')
+			.replace('{{cash}}', formatValue(cashReward))
+			.replace('{{gems}}', gemReward.toString());
+	}
+
+	function achievementText(achievement: AchievementDef, part: 'name' | 'description') {
+		const key = `achievements.items.${achievement.id}.${part}`;
+		const translated = $_(key);
+		return translated === key ? achievement[part] : translated;
+	}
+
+	onMount(async () => {
+		try {
+			const res = await fetch('/api/achievements');
+			if (res.ok) {
+				const data = await res.json();
+				achievements = data.achievements;
+				NEW_ACHIEVEMENTS_COUNT.set(data.unclaimedCount ?? 0);
+			} else {
+				toast.error($_('achievements.errors.load'));
+			}
+		} catch {
+			toast.error($_('achievements.errors.load'));
+		} finally {
+			loading = false;
+		}
+	});
+
+	async function claimAchievement(achievementId: string) {
+		claimingId = achievementId;
+		try {
+			const res = await fetch('/api/achievements/claim', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ achievementId })
 			});
-			fetchPortfolioSummary();
-			fetchGemsBalance();
-		} else {
-			toast.error($_("achievements.errors.claim"));
+			if (res.ok) {
+				const data = await res.json();
+				achievements = achievements.map((a) =>
+					a.id === achievementId ? { ...a, claimed: true } : a
+				);
+				NEW_ACHIEVEMENTS_COUNT.set(unclaimedCount);
+				toast.success($_('achievements.reward_claimed'), {
+					description: rewardDescription(data.cashReward, data.gemReward)
+				});
+				fetchPortfolioSummary();
+				fetchGemsBalance();
+			} else {
+				toast.error($_('achievements.errors.claim'));
+			}
+		} catch {
+			toast.error($_('achievements.errors.claim'));
+		} finally {
+			claimingId = null;
 		}
-	} catch {
-		toast.error($_("achievements.errors.claim"));
-	} finally {
-		claimingId = null;
 	}
-}
 
-async function claimAll() {
-	claimingAll = true;
-	try {
-		const res = await fetch("/api/achievements/claim", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ claimAll: true }),
-		});
-		if (res.ok) {
-			const data = await res.json();
-			achievements = achievements.map((a) =>
-				a.unlocked ? { ...a, claimed: true } : a,
-			);
-			NEW_ACHIEVEMENTS_COUNT.set(0);
-			toast.success(
-				$_("achievements.claimed_all_success").replace("{{count}}", data.claimed),
-				{
-					description: rewardDescription(data.cashReward, data.gemReward),
-				},
-			);
-			fetchPortfolioSummary();
-			fetchGemsBalance();
-		} else {
-			toast.error($_("achievements.errors.claim_all"));
+	async function claimAll() {
+		claimingAll = true;
+		try {
+			const res = await fetch('/api/achievements/claim', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ claimAll: true })
+			});
+			if (res.ok) {
+				const data = await res.json();
+				achievements = achievements.map((a) => (a.unlocked ? { ...a, claimed: true } : a));
+				NEW_ACHIEVEMENTS_COUNT.set(0);
+				toast.success($_('achievements.claimed_all_success').replace('{{count}}', data.claimed), {
+					description: rewardDescription(data.cashReward, data.gemReward)
+				});
+				fetchPortfolioSummary();
+				fetchGemsBalance();
+			} else {
+				toast.error($_('achievements.errors.claim_all'));
+			}
+		} catch {
+			toast.error($_('achievements.errors.claim_all'));
+		} finally {
+			claimingAll = false;
 		}
-	} catch {
-		toast.error($_("achievements.errors.claim_all"));
-	} finally {
-		claimingAll = false;
 	}
-}
 
-function formatProgress(current: number, target: number): string {
-	if (target >= 1000000)
-		return `${formatValue(current)} / ${formatValue(target)}`;
-	return `${current.toLocaleString()} / ${target.toLocaleString()}`;
-}
+	function formatProgress(current: number, target: number): string {
+		if (target >= 1000000) return `${formatValue(current)} / ${formatValue(target)}`;
+		return `${current.toLocaleString()} / ${target.toLocaleString()}`;
+	}
 </script>
 
 <SEO
@@ -183,7 +173,9 @@ function formatProgress(current: number, target: number): string {
 					{#if loading}
 						{$_('achievements.loading')}
 					{:else}
-						{$_('achievements.claimed_summary').replace("{{claimed}}", totalClaimed.toString()).replace("{{total}}", totalAchievements.toString())}
+						{$_('achievements.claimed_summary')
+							.replace('{{claimed}}', totalClaimed.toString())
+							.replace('{{total}}', totalAchievements.toString())}
 					{/if}
 				</p>
 			</div>
@@ -191,7 +183,7 @@ function formatProgress(current: number, target: number): string {
 				<Button size="sm" onclick={claimAll} disabled={claimingAll}>
 					{claimingAll
 						? $_('achievements.claiming_all')
-						: $_('achievements.claim_all').replace("{{count}}", unclaimedCount.toString())}
+						: $_('achievements.claim_all').replace('{{count}}', unclaimedCount.toString())}
 				</Button>
 			{/if}
 		</div>
@@ -251,13 +243,15 @@ function formatProgress(current: number, target: number): string {
 								<div class="flex items-start gap-3">
 									<img
 										src="/achievements/{achievement.icon}"
-										alt={achievementText(achievement, "name")}
+										alt={achievementText(achievement, 'name')}
 										class="h-14 w-14 shrink-0 {achievement.unlocked ? '' : 'brightness-50'}"
 									/>
 									<div class="min-w-0 flex-1">
-										<h3 class="truncate text-sm font-semibold">{achievementText(achievement, "name")}</h3>
+										<h3 class="truncate text-sm font-semibold">
+											{achievementText(achievement, 'name')}
+										</h3>
 										<p class="text-muted-foreground mt-0.5 line-clamp-2 text-xs">
-											{achievementText(achievement, "description")}
+											{achievementText(achievement, 'description')}
 										</p>
 									</div>
 									{#if achievement.unlocked && achievement.claimed}
@@ -283,7 +277,9 @@ function formatProgress(current: number, target: number): string {
 											onclick={() => claimAchievement(achievement.id)}
 											disabled={claimingId === achievement.id}
 										>
-											{claimingId === achievement.id ? $_('achievements.claiming') : $_('achievements.claim')}
+											{claimingId === achievement.id
+												? $_('achievements.claiming')
+												: $_('achievements.claim')}
 										</Button>
 									{:else if achievement.progress !== null && achievement.targetValue}
 										<div>

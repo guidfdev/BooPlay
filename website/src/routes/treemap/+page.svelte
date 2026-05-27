@@ -33,7 +33,7 @@
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
 	let lastUpdated = $state<Date>(new Date());
-	let isLiveUpdatesEnabled = $state(true);
+	const isLiveUpdatesEnabled = $state(true);
 	let isFullscreen = $state(false);
 	let fullscreenContainer: HTMLDivElement;
 
@@ -267,7 +267,7 @@
 			</p>
 			{#if coins.length > 0}
 				<p class="text-muted-foreground mt-1 text-sm">
-					{$_('treemap.last_updated').replace("{{time}}", lastUpdated.toLocaleTimeString())}
+					{$_('treemap.last_updated').replace('{{time}}', lastUpdated.toLocaleTimeString())}
 				</p>
 			{/if}
 		</div>
@@ -321,7 +321,7 @@
 							<span>{$_('treemap.negative_change')}</span>
 						</div>
 						<Badge variant="outline" class="ml-auto">
-							{$_('treemap.coins_count').replace("{{count}}", coins.length.toString())}
+							{$_('treemap.coins_count').replace('{{count}}', coins.length.toString())}
 						</Badge>
 					</div>
 					<div use:chart={treemapOptions}></div>

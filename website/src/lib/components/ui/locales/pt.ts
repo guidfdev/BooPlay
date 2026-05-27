@@ -322,7 +322,8 @@ export default {
 		title: 'Conquistas',
 		seo_description:
 			'Acompanhe seu progresso e desbloqueie conquistas no simulador de trading cripto BooPlay. Complete desafios para ganhar recompensas.',
-		seo_keywords: 'conquistas de jogo cripto, desafios de simulador de trading, recompensas virtuais de trading',
+		seo_keywords:
+			'conquistas de jogo cripto, desafios de simulador de trading, recompensas virtuais de trading',
 		loading: 'Carregando...',
 		claimed_summary: '{{claimed}} / {{total}} conquistadas',
 		claim_all: 'Resgatar todas ({{count}})',
@@ -858,7 +859,8 @@ export default {
 	},
 	treemap: {
 		title: 'Treemap do Mercado',
-		description: 'Representação visual do mercado de criptomoedas. O tamanho indica a capitalização de mercado, a cor mostra a mudança de preço em 24h.',
+		description:
+			'Representação visual do mercado de criptomoedas. O tamanho indica a capitalização de mercado, a cor mostra a mudança de preço em 24h.',
 		seo_description:
 			'Visualização interativa do treemap do mercado de criptomoedas virtuais. Visualize a capitalização de mercado simulada e as mudanças de preço em 24h para todas as moedas no formato treemap visual do nosso jogo de trading.',
 		seo_keywords:
@@ -881,7 +883,8 @@ export default {
 			'Saiba mais sobre o Booplay - uma simulação realista de negociação de criptomoedas focando em riscos e mecânicas DeFi.',
 		seo_keywords:
 			'simulador de trading cripto, simulação DeFi, trading virtual, jogo de trading, educação em criptomoedas',
-		subtitle: 'Um simulador de trading cripto onde você pode praticar negociações sem perder dinheiro real. Crie moedas, negocie-as, e faça rug pulls!',
+		subtitle:
+			'Um simulador de trading cripto onde você pode praticar negociações sem perder dinheiro real. Crie moedas, negocie-as, e faça rug pulls!',
 		user_manual_button: 'Manual do Usuário',
 		user_manual: {
 			previous: 'Anterior',
@@ -955,7 +958,8 @@ export default {
 				},
 				14: {
 					title: 'Placar de Líderes',
-					description: 'Compita com outros usuários no Placar. Suba posições com decisões de investimento inteligentes!'
+					description:
+						'Compita com outros usuários no Placar. Suba posições com decisões de investimento inteligentes!'
 				},
 				15: {
 					title: 'Recompensas Diárias',
@@ -1000,8 +1004,10 @@ export default {
 			github_url_booplay: 'https://github.com/1boongie/BooPlay',
 			our_discord: 'Nosso Discord',
 			discord_url: 'https://discord.gg/JGT4JJv5M7',
-			icons_credit: 'Ícones de conquistas por <a href="https://twitter.com/gvesster" target="_blank" rel="noopener" class="text-primary underline">gvstr</a>',
-			animations_credit: 'Animações de baús por <a href="https://admurin.itch.io/" target="_blank" rel="noopener" class="text-primary underline">admurin</a>'
+			icons_credit:
+				'Ícones de conquistas por <a href="https://twitter.com/gvesster" target="_blank" rel="noopener" class="text-primary underline">gvstr</a>',
+			animations_credit:
+				'Animações de baús por <a href="https://admurin.itch.io/" target="_blank" rel="noopener" class="text-primary underline">admurin</a>'
 		}
 	}
 } satisfies typeof en;

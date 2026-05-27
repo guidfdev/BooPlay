@@ -1,7 +1,10 @@
 import { ACHIEVEMENTS } from '$lib/data/achievements';
 
 const achievementItems = Object.fromEntries(
-	ACHIEVEMENTS.map((achievement) => [achievement.id, { name: achievement.name, description: achievement.description }])
+	ACHIEVEMENTS.map((achievement) => [
+		achievement.id,
+		{ name: achievement.name, description: achievement.description }
+	])
 );
 
 export default {
@@ -593,9 +596,10 @@ export default {
 	},
 	treemap: {
 		title: 'Market Treemap',
-		description: 'Visual representation of the cryptocurrency market. Size indicates market cap, color shows 24h price change.',
+		description:
+			'Visual representation of the cryptocurrency market. Size indicates market cap, color shows 24h price change.',
 		seo_description:
-			'Interactive virtual cryptocurrency market treemap visualization. View simulated market cap and 24h price changes for all coins in our trading game\'s visual treemap format.',
+			"Interactive virtual cryptocurrency market treemap visualization. View simulated market cap and 24h price changes for all coins in our trading game's visual treemap format.",
 		seo_keywords:
 			'virtual cryptocurrency treemap, market visualization game, crypto market cap simulation, price changes game, market analysis simulator',
 		live: 'Live',
@@ -616,7 +620,8 @@ export default {
 			'Learn about Booplay - a realistic cryptocurrency trading simulation focusing on DeFi risks and mechanics.',
 		seo_keywords:
 			'crypto trading simulator, DeFi simulation, virtual trading, trading game, cryptocurrency education',
-		subtitle: 'A crypto trading simulator where you can practice trading without losing real money. Create coins, trade them, and rug pull!',
+		subtitle:
+			'A crypto trading simulator where you can practice trading without losing real money. Create coins, trade them, and rug pull!',
 		user_manual_button: 'User Manual',
 		user_manual: {
 			previous: 'Previous',
@@ -690,7 +695,8 @@ export default {
 				},
 				14: {
 					title: 'Leaderboards',
-					description: 'Compete with other users on the Leaderboard. Climb the ranks by making smart investment decisions!'
+					description:
+						'Compete with other users on the Leaderboard. Climb the ranks by making smart investment decisions!'
 				},
 				15: {
 					title: 'Daily Rewards',
@@ -700,7 +706,7 @@ export default {
 				16: {
 					title: 'Concluding',
 					description:
-						'Start small, diversify your holdings, and don\'t invest everything in one coin. Watch for coins with diversified holders to avoid absolute rug pulls. People get smart!'
+						"Start small, diversify your holdings, and don't invest everything in one coin. Watch for coins with diversified holders to avoid absolute rug pulls. People get smart!"
 				}
 			}
 		},
@@ -735,8 +741,10 @@ export default {
 			github_url_booplay: 'https://github.com/1boongie/BooPlay',
 			our_discord: 'Our Discord',
 			discord_url: 'https://discord.gg/JGT4JJv5M7',
-			icons_credit: 'Achievement icons by <a href="https://twitter.com/gvesster" target="_blank" rel="noopener" class="text-primary underline">gvstr</a>',
-			animations_credit: 'Chest animations by <a href="https://admurin.itch.io/" target="_blank" rel="noopener" class="text-primary underline">admurin</a>'
+			icons_credit:
+				'Achievement icons by <a href="https://twitter.com/gvesster" target="_blank" rel="noopener" class="text-primary underline">gvstr</a>',
+			animations_credit:
+				'Chest animations by <a href="https://admurin.itch.io/" target="_blank" rel="noopener" class="text-primary underline">admurin</a>'
 		}
 	}
 };
