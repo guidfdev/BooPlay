@@ -864,6 +864,92 @@ export default {
 			'simulador de trading cripto, simulação DeFi, trading virtual, jogo de trading, educação em criptomoedas',
 		subtitle: 'Um simulador de trading cripto onde você pode praticar negociações sem perder dinheiro real. Crie moedas, negocie-as, e faça rug pulls!',
 		user_manual_button: 'Manual do Usuário',
+		user_manual: {
+			previous: 'Anterior',
+			next: 'Próximo',
+			tip_of: 'Dica {{current}} de {{total}}',
+			tips: {
+				1: {
+					title: 'Bem-vindo ao BooPlay!',
+					description:
+						'BooPlay é um simulador de negociação de criptomoedas onde você pode praticar sem risco financeiro real. Comece com dinheiro virtual, crie moedas, faça previsões sobre mercados e, o mais importante, rugpull!'
+				},
+				2: {
+					title: 'Criando sua Primeira Moeda',
+					description:
+						'Clique em "Criar moeda" na barra lateral para lançar sua própria criptomoeda. Escolha um nome e símbolo únicos e faça upload de um ícone. Cada moeda começa em $0.000001'
+				},
+				3: {
+					title: 'Entendendo Pools de Liquidez',
+					description:
+						'Cada moeda tem uma "pool de liquidez", com sua moeda e a moeda base ($). Os preços são determinados pela proporção entre essas quantias. Quando você compra, o preço sobe; quando vende, cai.'
+				},
+				4: {
+					title: 'AMM - Automated Market Maker',
+					description:
+						'O BooPlay usa um sistema AMM onde os preços são calculados automaticamente com base na oferta e demanda. Quanto mais você compra, maior o preço. Grandes negociações causam "slippage" — variação de preço durante a operação.'
+				},
+				5: {
+					title: 'Comprando Moedas',
+					description:
+						'Vá para a página da moeda e clique em "Comprar". Informe o valor que deseja gastar. O AMM mostrará exatamente quantas moedas você receberá, incluindo slippage.'
+				},
+				6: {
+					title: 'Vendendo Moedas',
+					description:
+						'Na página da moeda, clique em "Vender" e informe quantas moedas quer vender. Você pode ver suas participações no Portfólio. Lembre-se: vender grandes quantias pode impactar bastante o preço!'
+				},
+				7: {
+					title: 'O que é um "Rug Pull"?',
+					description:
+						'Um "rug pull" ocorre quando grandes detentores (incluindo criadores) vendem tudo de uma vez, derrubando o preço.'
+				},
+				8: {
+					title: 'Gestão de Portfólio',
+					description:
+						'Confira sua página de Portfólio para ver todas as participações, valores atuais e transações recentes. Acompanhe seu desempenho e identifique investimentos que vão bem.'
+				},
+				9: {
+					title: 'Visão do Mercado',
+					description:
+						'A página de Mercado mostra todas as moedas disponíveis ordenadas por capitalização, volume e mudanças de preço. Use para descobrir moedas em alta e oportunidades de investimento.'
+				},
+				10: {
+					title: 'Hopium - Mercados de Previsão',
+					description:
+						'O Hopium permite prever perguntas sim/não sobre o futuro. IA resolve automaticamente perguntas com base em dados do mundo real. Teste suas previsões e ganhe se estiver certo. Segure $100.000 em dinheiro para criar sua própria pergunta no Hopium :)'
+				},
+				11: {
+					title: 'Jogos de Arcade',
+					description:
+						'Visite a seção Arcade para jogos de alto risco e alta recompensa. Lembre-se: são jogos de pura sorte. Jogue apenas com o que pode perder, mesmo nesta simulação!'
+				},
+				12: {
+					title: 'Feed de Negócios ao Vivo',
+					description:
+						'Acompanhe a página Live Trades para ver atividade de negociação em tempo real. Isso ajuda a identificar moedas em tendência e entender o sentimento do mercado.'
+				},
+				13: {
+					title: 'Visualização Treemap',
+					description:
+						'A página Treemap mostra uma representação visual de todo o mercado. Quadrados maiores representam maiores capitalizações, e cores mostram desempenho de preço.'
+				},
+				14: {
+					title: 'Placar de Líderes',
+					description: 'Compita com outros usuários no Placar. Suba posições com decisões de investimento inteligentes!'
+				},
+				15: {
+					title: 'Recompensas Diárias',
+					description:
+						'Faça login diariamente para resgatar dinheiro gratuito! Sua sequência de login aumenta o bônus diário. Jogadores consistentes recebem mais dinheiro virtual.'
+				},
+				16: {
+					title: 'Conclusão',
+					description:
+						'Comece pequeno, diversifique suas participações e não invista tudo em uma única moeda. Procure moedas com detentores diversificados para evitar rug pulls absolutos.'
+				}
+			}
+		},
 		about_booplay: {
 			title: 'Sobre o BooPlay',
 			description_p1:

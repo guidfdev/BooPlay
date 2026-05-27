@@ -1,182 +1,71 @@
 <script lang="ts">
-	import * as Dialog from '$lib/components/ui/dialog';
-	import { Button } from '$lib/components/ui/button';
-	import { Badge } from '$lib/components/ui/badge';
-	import { HugeiconsIcon } from '@hugeicons/svelte';
-	import {
-		ArrowLeft01Icon,
-		ArrowRight01Icon,
-		BookOpen01Icon,
-		Coins01Icon,
-		TradeUpIcon,
-		TradeDownIcon,
-		DiceFaces01Icon,
-		Target01Icon,
-		BarChartIcon,
-		Award01Icon
-	} from '@hugeicons/core-free-icons';
+import {
+	ArrowLeft01Icon,
+	ArrowRight01Icon,
+	Award01Icon,
+	BarChartIcon,
+	BookOpen01Icon,
+	Coins01Icon,
+	DiceFaces01Icon,
+	Target01Icon,
+	TradeDownIcon,
+	TradeUpIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/svelte";
+import { _ } from "svelte-i18n";
+import { Badge } from "$lib/components/ui/badge";
+import { Button } from "$lib/components/ui/button";
+import * as Dialog from "$lib/components/ui/dialog";
 
-	let { open = $bindable(false) } = $props<{
-		open?: boolean;
-	}>();
+let { open = $bindable(false) } = $props<{
+	open?: boolean;
+}>();
 
-	interface Tip {
-		id: number;
-		title: string;
-		description: string;
-		image?: string;
-		icon: any;
+interface Tip {
+	id: number;
+	titleKey?: string;
+	descriptionKey?: string;
+	image?: string;
+	icon: any;
+}
+
+const tips: Tip[] = [
+    { id: 1, titleKey: 'about.user_manual.tips.1.title', descriptionKey: 'about.user_manual.tips.1.description', icon: BookOpen01Icon, image: '/tips/cover.avif' },
+    { id: 2, titleKey: 'about.user_manual.tips.2.title', descriptionKey: 'about.user_manual.tips.2.description', icon: Coins01Icon, image: '/tips/coin.avif' },
+    { id: 3, titleKey: 'about.user_manual.tips.3.title', descriptionKey: 'about.user_manual.tips.3.description', icon: BarChartIcon, image: '/tips/liquidity-pools.avif' },
+    { id: 4, titleKey: 'about.user_manual.tips.4.title', descriptionKey: 'about.user_manual.tips.4.description', icon: BarChartIcon, image: '/tips/amm.avif' },
+    { id: 5, titleKey: 'about.user_manual.tips.5.title', descriptionKey: 'about.user_manual.tips.5.description', icon: TradeUpIcon, image: '/tips/buying.avif' },
+    { id: 6, titleKey: 'about.user_manual.tips.6.title', descriptionKey: 'about.user_manual.tips.6.description', icon: TradeDownIcon, image: '/tips/selling.avif' },
+    { id: 7, titleKey: 'about.user_manual.tips.7.title', descriptionKey: 'about.user_manual.tips.7.description', icon: Target01Icon, image: '/tips/rugpull.avif' },
+    { id: 8, titleKey: 'about.user_manual.tips.8.title', descriptionKey: 'about.user_manual.tips.8.description', icon: BarChartIcon, image: '/tips/portfolio.avif' },
+    { id: 9, titleKey: 'about.user_manual.tips.9.title', descriptionKey: 'about.user_manual.tips.9.description', icon: Award01Icon, image: '/tips/market.avif' },
+    { id: 10, titleKey: 'about.user_manual.tips.10.title', descriptionKey: 'about.user_manual.tips.10.description', icon: Target01Icon, image: '/tips/hopium.avif' },
+    { id: 11, titleKey: 'about.user_manual.tips.11.title', descriptionKey: 'about.user_manual.tips.11.description', icon: DiceFaces01Icon, image: '/tips/arcade.avif' },
+    { id: 12, titleKey: 'about.user_manual.tips.12.title', descriptionKey: 'about.user_manual.tips.12.description', icon: BarChartIcon, image: '/tips/live.avif' },
+    { id: 13, titleKey: 'about.user_manual.tips.13.title', descriptionKey: 'about.user_manual.tips.13.description', icon: BarChartIcon, image: '/tips/treemap.avif' },
+    { id: 14, titleKey: 'about.user_manual.tips.14.title', descriptionKey: 'about.user_manual.tips.14.description', icon: Award01Icon, image: '/tips/leaderboard.avif' },
+    { id: 15, titleKey: 'about.user_manual.tips.15.title', descriptionKey: 'about.user_manual.tips.15.description', icon: Coins01Icon, image: '/tips/daily.avif' },
+    { id: 16, titleKey: 'about.user_manual.tips.16.title', descriptionKey: 'about.user_manual.tips.16.description', icon: TradeUpIcon, image: '/tips/ender.avif' }
+];
+
+let currentPage = $state(0);
+const currentTip = $derived(tips[currentPage]);
+
+function nextTip() {
+	if (currentPage < tips.length - 1) {
+		currentPage++;
 	}
+}
 
-	const tips: Tip[] = [
-		{
-			id: 1,
-			title: 'Welcome to Booplay!',
-			description:
-				'Booplay is a cryptocurrency trading simulator where you can practice trading without real financial risk. Start with virtual money, create coins, make predictions on markets, and most importantly, rugpull!',
-			icon: BookOpen01Icon,
-			image: '/tips/cover.avif'
-		},
-		{
-			id: 2,
-			title: 'Creating Your First Coin',
-			description:
-				'Click "Create coin" in the sidebar to launch your own cryptocurrency. Choose a unique name, symbol, and upload an icon. Each coin starts at $0.000001',
-			icon: Coins01Icon,
-			image: '/tips/coin.avif'
-		},
-		{
-			id: 3,
-			title: 'Understanding Liquidity Pools',
-			description:
-				'Each coin has a "liquidity pool," with your coin and base currency ($). Prices are determined by the ratio between these amounts. When you buy, the price goes up; when you sell, it goes down.',
-			icon: BarChartIcon,
-			image: '/tips/liquidity-pools.avif'
-		},
-		{
-			id: 4,
-			title: 'AMM - Automated Market Maker',
-			description:
-				'Booplay uses an AMM system where prices are calculated automatically based on supply and demand. The more you buy, the higher the price goes. The more you sell, the lower it drops. Large trades create "slippage" - the price change during your trade.',
-			icon: BarChartIcon,
-			image: '/tips/amm.avif'
-		},
-		{
-			id: 5,
-			title: 'Buying Coins',
-			description:
-				'Navigate to any coin page and click "Buy". Enter the amount you want to spend. The AMM (Automated Market Maker) will show you exactly how many coins you\'ll receive, including slippage.',
-			icon: TradeUpIcon,
-			image: '/tips/buying.avif'
-		},
-		{
-			id: 6,
-			title: 'Selling Coins',
-			description:
-				'On a coin page, click "Sell" and enter how many coins you want to sell. You can see your holdings in your Portfolio. Remember: selling large amounts can significantly impact the price!',
-			icon: TradeDownIcon,
-			image: '/tips/selling.avif'
-		},
-		{
-			id: 7,
-			title: 'What is a "Rug Pull"?',
-			description:
-				'A "rug pull" happens when large holders (including coin creators) sell their holdings all at once, crashing the price.',
-			icon: Target01Icon,
-			image: '/tips/rugpull.avif'
-		},
-		{
-			id: 8,
-			title: 'Portfolio Management',
-			description:
-				'Check your Portfolio page to see all your holdings, their current values, and recent transactions. Track your performance and see which investments are doing well.',
-			icon: BarChartIcon,
-			image: '/tips/portfolio.avif'
-		},
-		{
-			id: 9,
-			title: 'Market Overview',
-			description:
-				'The Market page shows all available coins sorted by market cap, volume, and price changes. Use this to discover trending coins and investment opportunities.',
-			icon: Award01Icon,
-			image: '/tips/market.avif'
-		},
-		{
-			id: 10,
-			title: 'Hopium - Prediction Markets',
-			description:
-				'Hopium lets you predict on yes/no questions about the future. AI automatically resolves questions based on real-world data. Test your prediction skills and earn from correct forecasts. Hold $100,000 in cash to create your own Hopium question :)',
-			icon: Target01Icon,
-			image: '/tips/hopium.avif'
-		},
-		{
-			id: 11,
-			title: 'Arcade Games',
-			description:
-				'Visit the Arcade section for high-risk, high-reward games. Remember: these are pure chance games. Only play with what you can afford to lose, even in this simulation!',
-			icon: DiceFaces01Icon,
-			image: '/tips/arcade.avif'
-		},
-		{
-			id: 12,
-			title: 'Live Trades Feed',
-			description:
-				'Watch the Live Trades page to see real-time trading activity across all coins. This helps you spot trending coins and understand market sentiment. The sidebar shows $1,000+ trades, while the main feed displays every transaction.',
-			icon: BarChartIcon,
-			image: '/tips/live.avif'
-		},
-		{
-			id: 13,
-			title: 'Treemap Visualization',
-			description:
-				'The Treemap page shows a visual representation of the entire market. Larger squares represent higher market caps, and colors show price performance.',
-			icon: BarChartIcon,
-			image: '/tips/treemap.avif'
-		},
-		{
-			id: 14,
-			title: 'Leaderboards',
-			description:
-				'Compete with other users on the Leaderboard. Climb the ranks by making smart investment decisions!',
-			icon: Award01Icon,
-			image: '/tips/leaderboard.avif'
-		},
-		{
-			id: 15,
-			title: 'Daily Rewards',
-			description:
-				'Log in daily to claim free money! Your login streak increases your daily bonus. Consistent players get more virtual cash to invest.',
-			icon: Coins01Icon,
-			image: '/tips/daily.avif'
-		},
-		{
-			id: 16,
-			title: 'Concluding',
-			description:
-				"Start small, diversify your holdings, and don't invest everything in one coin. Watch for coins with diversified holders to avoid absolute rug pulls. People get smart!",
-			icon: TradeUpIcon,
-			image: '/tips/ender.avif'
-		}
-	];
-
-	let currentPage = $state(0);
-	let currentTip = $derived(tips[currentPage]);
-
-	function nextTip() {
-		if (currentPage < tips.length - 1) {
-			currentPage++;
-		}
+function previousTip() {
+	if (currentPage > 0) {
+		currentPage--;
 	}
+}
 
-	function previousTip() {
-		if (currentPage > 0) {
-			currentPage--;
-		}
-	}
-
-	function goToPage(page: number) {
-		currentPage = page;
-	}
+function goToPage(page: number) {
+	currentPage = page;
+}
 </script>
 
 <Dialog.Root bind:open>
@@ -184,20 +73,20 @@
 		<div class="min-h-0 flex-1 space-y-6 overflow-y-auto">
 			<!-- Main content -->
 			<div class="space-y-4">
-				<div class="flex items-center gap-3">
-					<div class="bg-muted rounded-lg p-3">
-						<HugeiconsIcon icon={currentTip.icon} class="h-8 w-8" />
+					<div class="flex items-center gap-3">
+						<div class="bg-muted rounded-lg p-3">
+							<HugeiconsIcon icon={currentTip.icon} class="h-8 w-8" />
+						</div>
+						<h3 class="text-xl font-semibold">{$_(currentTip.titleKey)}</h3>
 					</div>
-					<h3 class="text-xl font-semibold">{currentTip.title}</h3>
-				</div>
 
-				<p class="text-muted-foreground leading-relaxed">
-					{currentTip.description}
-				</p>
+					<p class="text-muted-foreground leading-relaxed">
+						{$_(currentTip.descriptionKey)}
+					</p>
 
 				{#if currentTip.image}
 					<div class="overflow-hidden rounded-lg border">
-						<img src={currentTip.image} alt={currentTip.title} class="h-auto w-full" />
+						<img src={currentTip.image} alt={$_(currentTip.titleKey)} class="h-auto w-full" />
 					</div>
 				{/if}
 			</div>
@@ -226,13 +115,13 @@
 				class="flex items-center gap-2"
 			>
 				<HugeiconsIcon icon={ArrowLeft01Icon} class="h-4 w-4" />
-				Previous
+				{$_('about.user_manual.previous')}
 			</Button>
 
 			<div class="flex items-center gap-2">
 				<span class="text-muted-foreground text-sm">
-					Tip {currentPage + 1} of {tips.length}
-				</span>
+                    {$_('about.user_manual.tip_of').replace("{{current}}", (currentPage+1).toString()).replace("{{total}}", tips.length.toString())}
+                </span>
 			</div>
 
 			<Button
@@ -241,7 +130,7 @@
 				disabled={currentPage === tips.length - 1}
 				class="flex items-center gap-2"
 			>
-				Next
+				{$_('about.user_manual.next')}
 				<HugeiconsIcon icon={ArrowRight01Icon} class="h-4 w-4" />
 			</Button>
 		</div>
