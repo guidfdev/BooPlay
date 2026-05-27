@@ -221,7 +221,11 @@ export async function GET({ request }) {
 			createdCoins: createdCoins,
 			createdQuestions: createdQuestions
 		}; // Serialize the data
-		const jsonData = JSON.stringify(exportData, null, 2);
+		const jsonData = JSON.stringify(
+			exportData,
+			(_key, value) => (typeof value === 'bigint' ? value.toString() : value),
+			2
+		);
 		const dataSize = new TextEncoder().encode(jsonData).length;
 
 		// Return as downloadable JSON with proper headers for streaming download

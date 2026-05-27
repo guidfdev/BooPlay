@@ -451,5 +451,99 @@ export default {
 			'No transactions yet',
 			"You haven't made any trades yet. Start by buying or selling coins."
 		]
+	},
+	settings: {
+		title: 'Settings',
+		seo_description:
+			'Manage your Booplay account settings, profile information, audio preferences, and privacy options.',
+		seo_keywords:
+			'game account settings, profile settings game, privacy settings, audio settings game',
+		not_logged_in: 'You need to be logged in to view your settings',
+		sign_in_button: 'Sign In',
+		profile_settings: {
+			title: 'Profile Settings',
+			description: 'Update your profile information',
+			display_name_label: 'Display Name',
+			display_name_required: 'Display name is required.',
+			display_name_min: 'Display name must be at least 2 characters.',
+			display_name_max: 'Display name must be 50 characters or less.',
+			username_label: 'Username',
+			username_hint: 'Only letters, numbers, underscores. 3–30 characters.',
+			username_checking: 'Checking…',
+			username_taken: 'Taken',
+			bio_label: 'Bio',
+			bio_placeholder: 'Tell us about yourself',
+			timezone_label: 'Timezone',
+			avatar_change_text: 'Change',
+			save_changes_button: 'Save Changes',
+			saving_button: 'Saving…',
+			success_message: 'Settings updated successfully!',
+			success_refresh: 'Refresh',
+			error_message: 'Failed to update settings',
+			unexpected_error: 'An unexpected error occurred',
+			profile_picture_large: 'Profile picture must be smaller than 1MB',
+			invalid_image: 'Please select a valid image file'
+		},
+		audio_settings: {
+			title: 'Audio Settings',
+			description: 'Adjust volume for game sounds',
+			volume_label: 'Volume',
+			volume_hint: 'Controls all game sounds including effects and background audio'
+		},
+		notification_settings: {
+			title: 'Notification Settings',
+			description: 'Control how you receive notifications',
+			mentions_title: 'Mentions',
+			mentions_description: 'Receive notifications when someone @mentions you in comments'
+		},
+		blocked_users: {
+			title: 'Blocked Users',
+			description: "Users you've blocked won't appear in comments and can't send you notifications",
+			loading: 'Loading...',
+			no_blocked: "You haven't blocked anyone.",
+			unblock_button: 'Unblock',
+			unblocking_button: 'Unblocking...',
+			unblock_success: 'Unblocked @{{username}}',
+			unblock_failed: 'Failed to unblock user',
+			load_failed: 'Failed to load blocked users'
+		},
+		data_privacy: {
+			title: 'Data & Privacy',
+			description: 'Manage your personal data and account',
+			download_title: 'Download Your Data',
+			download_description:
+				'Export a complete copy of your account data including transactions, bets, and profile information.',
+			download_button: 'Download Data',
+			downloading_button: 'Downloading...',
+			download_started: 'Your data download has started',
+			download_size_confirm:
+				'Your data export is {{size}}MB. This may take a while to download. Continue?',
+			download_failed: 'Failed to start data download: {{error}}',
+			delete_title: 'Delete Account',
+			delete_description:
+				'Schedule your account for permanent deletion. This will anonymize your data while preserving transaction records for compliance.',
+			delete_button: 'Delete Account',
+			delete_modal_title: 'Delete Account',
+			delete_modal_description:
+				'This action cannot be undone. Your account will be scheduled for permanent deletion, after a grace period of {{days}} days. Your data will be anonymized.',
+			delete_what_happens: 'What happens when you delete your account:',
+			delete_list_profile: '• Your profile information will be permanently removed',
+			delete_list_logout: '• You will be logged out from all devices',
+			delete_list_anonymize: '• Your comments will be anonymized',
+			delete_list_transactions:
+				'• Transaction history will be preserved for compliance (anonymized)',
+			delete_list_recovery: '• You will not be able to recover this account',
+			delete_confirmation_label: 'Type "DELETE MY ACCOUNT" to confirm:',
+			delete_confirmation_placeholder: 'DELETE MY ACCOUNT',
+			delete_cancel_button: 'Cancel',
+			delete_confirm_button: 'Delete Account',
+			deleting_button: 'Deleting...',
+			delete_confirm_type_error: 'Please type "DELETE MY ACCOUNT" to confirm',
+			delete_scheduled: 'Account deletion scheduled successfully',
+			delete_already_scheduled: 'Account deletion already scheduled',
+			delete_already_scheduled_desc:
+				'You have already requested account deletion. Contact support to cancel.',
+			delete_failed: 'Failed to delete account: {{error}}'
+		}
 	}
 };

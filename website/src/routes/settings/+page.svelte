@@ -13,6 +13,7 @@
 	import { HugeiconsIcon } from '@hugeicons/svelte';
 	import { Select } from 'bits-ui';
 	import { onDestroy, onMount } from 'svelte';
+	import { _ } from 'svelte-i18n';
 	import { toast } from 'svelte-sonner';
 	import { browser } from '$app/environment';
 	import { invalidateAll } from '$app/navigation';
@@ -39,7 +40,7 @@
 	let bio = $state($USER_DATA?.bio ?? '');
 	let username = $state($USER_DATA?.username || '');
 	let timezone = $state($USER_DATA?.timezone?.toString() || '0');
-	const initialUsername = $USER_DATA?.username || '';
+	let initialUsername = $USER_DATA?.username || '';
 	let avatarFile: FileList | undefined = $state(undefined);
 
 	let previewUrl: string | null = $state(null);
@@ -97,10 +98,10 @@
 				const data = await res.json();
 				blockedUsers = data.blocks ?? [];
 			} else {
-				toast.error('Failed to load blocked users');
+				toast.error($_('settings.blocked_users.load_failed'));
 			}
 		} catch {
-			toast.error('Failed to load blocked users');
+			toast.error($_('settings.blocked_users.load_failed'));
 		}
 		blockedLoading = false;
 	}
@@ -113,12 +114,12 @@
 			});
 			if (res.ok) {
 				blockedUsers = blockedUsers.filter((b) => b.username !== username);
-				toast.success(`Unblocked @${username}`);
+				toast.success($_('settings.blocked_users.unblock_success', { values: { username } }));
 			} else {
-				toast.error('Failed to unblock user');
+				toast.error($_('settings.blocked_users.unblock_failed'));
 			}
 		} catch {
-			toast.error('Failed to unblock user');
+			toast.error($_('settings.blocked_users.unblock_failed'));
 		}
 		unblockingUser = null;
 	}
@@ -148,14 +149,14 @@
 		if (f) {
 			// Check file size
 			if (f.size > MAX_FILE_SIZE) {
-				toast.error('Profile picture must be smaller than 1MB');
+				toast.error($_('settings.profile_settings.profile_picture_large'));
 				(e.target as HTMLInputElement).value = '';
 				return;
 			}
 
 			// Check file type
 			if (!f.type.startsWith('image/')) {
-				toast.error('Please select a valid image file');
+				toast.error($_('settings.profile_settings.invalid_image'));
 				(e.target as HTMLInputElement).value = '';
 				return;
 			}
@@ -184,11 +185,11 @@
 
 	function validateName() {
 		if (!name.trim()) {
-			nameError = 'Display name is required.';
+			nameError = $_('settings.profile_settings.display_name_required');
 		} else if (name.trim().length < 2) {
-			nameError = 'Display name must be at least 2 characters.';
+			nameError = $_('settings.profile_settings.display_name_min');
 		} else if (name.trim().length > 50) {
-			nameError = 'Display name must be 50 characters or less.';
+			nameError = $_('settings.profile_settings.display_name_max');
 		} else {
 			nameError = '';
 		}
@@ -211,18 +212,21 @@
 			if (res.ok) {
 				await invalidateAll();
 				haptic.trigger('success');
-				toast.success('Settings updated successfully!', {
-					action: { label: 'Refresh', onClick: () => window.location.reload() }
+				toast.success($_('settings.profile_settings.success_message'), {
+					action: {
+						label: $_('settings.profile_settings.success_refresh'),
+						onClick: () => window.location.reload()
+					}
 				});
 			} else {
 				const result = await res.json();
-				toast.error('Failed to update settings', {
-					description: result.message || 'An error occurred while updating your settings'
+				toast.error($_('settings.profile_settings.error_message'), {
+					description: result.message || $_('settings.profile_settings.unexpected_error')
 				});
 			}
 		} catch (error) {
-			toast.error('Failed to update settings', {
-				description: 'An unexpected error occurred'
+			toast.error($_('settings.profile_settings.error_message'), {
+				description: $_('settings.profile_settings.unexpected_error')
 			});
 		} finally {
 			loading = false;
@@ -242,7 +246,7 @@
 			}
 		} catch (error) {
 			console.error('Failed to save volume settings:', error);
-			toast.error('Failed to save volume settings');
+			toast.error($_('settings.audio_settings.volume_hint'));
 		}
 	}, 500);
 
@@ -261,11 +265,11 @@
 			});
 			if (!response.ok) {
 				disableMentions = !disableMentions;
-				toast.error('Failed to update mention settings');
+				toast.error($_('settings.notification_settings.mentions_description'));
 			}
 		} catch {
 			disableMentions = !disableMentions;
-			toast.error('Failed to update mention settings');
+			toast.error($_('settings.notification_settings.mentions_description'));
 		}
 	}
 
@@ -298,7 +302,9 @@
 				const sizeInMB = parseInt(contentLength) / (1024 * 1024);
 				if (sizeInMB > 50) {
 					const proceed = confirm(
-						`Your data export is ${sizeInMB.toFixed(1)}MB. This may take a while to download. Continue?`
+						$_('settings.data_privacy.download_size_confirm', {
+							values: { size: sizeInMB.toFixed(1) }
+						})
 					);
 					if (!proceed) {
 						isDownloading = false;
@@ -327,19 +333,23 @@
 				}, 1000);
 			}
 
-			toast.success('Your data download has started');
+			toast.success($_('settings.data_privacy.download_started'));
 		} catch (error) {
 			console.error('Download error:', error);
-			toast.error('Failed to start data download: ' + (error as Error).message);
+			toast.error(
+				$_('settings.data_privacy.download_failed', {
+					values: { error: (error as Error).message }
+				})
+			);
 		} finally {
 			isDownloading = false;
 		}
 	}
 
 	async function deleteAccount() {
-		if (deleteConfirmationText !== 'DELETE MY ACCOUNT') {
+		if (deleteConfirmationText !== $_('settings.data_privacy.delete_confirmation_placeholder')) {
 			haptic.trigger('error');
-			toast.error('Please type "DELETE MY ACCOUNT" to confirm');
+			toast.error($_('settings.data_privacy.delete_confirm_type_error'));
 			return;
 		}
 
@@ -359,20 +369,24 @@
 
 			if (!response.ok) {
 				if (response.status === 409) {
-					toast.error('Account deletion already scheduled', {
-						description: 'You have already requested account deletion. Contact support to cancel.'
+					toast.error($_('settings.data_privacy.delete_already_scheduled'), {
+						description: $_('settings.data_privacy.delete_already_scheduled_desc')
 					});
 				} else {
 					throw new Error(result.message || 'Failed to delete account');
 				}
 			} else {
-				toast.success('Account deletion scheduled successfully', {
+				toast.success($_('settings.data_privacy.delete_scheduled'), {
 					description: result.message
 				});
 			}
 		} catch (error: any) {
 			console.error('Delete account error:', error);
-			toast.error('Failed to delete account: ' + error.message);
+			toast.error(
+				$_('settings.data_privacy.delete_failed', {
+					values: { error: error.message }
+				})
+			);
 		} finally {
 			isDeleting = false;
 			deleteDialogOpen = false;
@@ -382,29 +396,29 @@
 </script>
 
 <SEO
-	title="Settings - BooPlay"
-	description="Manage your Booplay account settings, profile information, audio preferences, and privacy options."
-	keywords="game account settings, profile settings game, privacy settings, audio settings game"
+	title="{$_('settings.title')} - BooPlay"
+	description={$_('settings.seo_description')}
+	keywords={$_('settings.seo_keywords')}
 />
 
 <div class="container mx-auto max-w-2xl p-6">
-	<h1 class="mb-6 text-2xl font-bold">Settings</h1>
+	<h1 class="mb-6 text-2xl font-bold">{$_('settings.title')}</h1>
 
 	{#if !$USER_DATA}
 		<div class="flex h-96 items-center justify-center">
 			<div class="text-center">
 				<div class="text-muted-foreground mb-4 text-xl">
-					You need to be logged in to view your settings
+					{$_('settings.not_logged_in')}
 				</div>
-				<Button onclick={() => (shouldSignIn = true)}>Sign In</Button>
+				<Button onclick={() => (shouldSignIn = true)}>{$_('settings.sign_in_button')}</Button>
 			</div>
 		</div>
 	{:else}
 		<div class="space-y-6">
 			<Card.Root>
 				<Card.Header>
-					<Card.Title>Profile Settings</Card.Title>
-					<Card.Description>Update your profile information</Card.Description>
+					<Card.Title>{$_('settings.profile_settings.title')}</Card.Title>
+					<Card.Description>{$_('settings.profile_settings.description')}</Card.Description>
 				</Card.Header>
 				<Card.Content>
 					<div class="mb-6 flex items-center gap-4">
@@ -422,7 +436,9 @@
 							<div
 								class="absolute inset-0 flex items-center justify-center rounded-full bg-black/50 opacity-0 transition-opacity group-hover:opacity-100"
 							>
-								<span class="text-xs text-white">Change</span>
+								<span class="text-xs text-white"
+									>{$_('settings.profile_settings.avatar_change_text')}</span
+								>
 							</div>
 						</div>
 						<div>
@@ -441,7 +457,7 @@
 
 					<form onsubmit={handleSubmit} class="space-y-4">
 						<div class="space-y-2">
-							<Label for="name">Display Name</Label>
+							<Label for="name">{$_('settings.profile_settings.display_name_label')}</Label>
 							<Input
 								id="name"
 								bind:value={name}
@@ -454,7 +470,7 @@
 						</div>
 
 						<div class="space-y-2">
-							<Label for="username">Username</Label>
+							<Label for="username">{$_('settings.profile_settings.username_label')}</Label>
 							<div class="relative">
 								<span class="text-muted-foreground absolute top-4 left-3 -translate-y-1/2 transform"
 									>@</span
@@ -468,28 +484,37 @@
 								/>
 								<div class="absolute top-1.5 right-3">
 									{#if checkingUsername}
-										<span class="text-muted-foreground text-sm">Checking…</span>
+										<span class="text-muted-foreground text-sm"
+											>{$_('settings.profile_settings.username_checking')}</span
+										>
 									{:else if username !== initialUsername}
 										{#if usernameAvailable}
 											<HugeiconsIcon icon={Tick01Icon} class="text-success" />
 										{:else}
-											<span class="text-destructive text-sm">Taken</span>
+											<span class="text-destructive text-sm"
+												>{$_('settings.profile_settings.username_taken')}</span
+											>
 										{/if}
 									{/if}
 								</div>
 							</div>
 							<p class="text-muted-foreground text-xs">
-								Only letters, numbers, underscores. 3–30 characters.
+								{$_('settings.profile_settings.username_hint')}
 							</p>
 						</div>
 
 						<div class="space-y-2">
-							<Label for="bio">Bio</Label>
-							<Textarea id="bio" bind:value={bio} rows={4} placeholder="Tell us about yourself" />
+							<Label for="bio">{$_('settings.profile_settings.bio_label')}</Label>
+							<Textarea
+								id="bio"
+								bind:value={bio}
+								rows={4}
+								placeholder={$_('settings.profile_settings.bio_placeholder')}
+							/>
 						</div>
 
 						<div class="space-y-2">
-							<Label for="bio">Timezone</Label>
+							<Label for="bio">{$_('settings.profile_settings.timezone_label')}</Label>
 							<Select.Root
 								type="single"
 								bind:value={timezone}
@@ -521,7 +546,9 @@
 						</div>
 
 						<Button type="submit" disabled={loading || !isDirty || !!nameError}>
-							{loading ? 'Saving…' : 'Save Changes'}
+							{loading
+								? $_('settings.profile_settings.saving_button')
+								: $_('settings.profile_settings.save_changes_button')}
 						</Button>
 					</form>
 				</Card.Content>
@@ -529,13 +556,15 @@
 
 			<Card.Root>
 				<Card.Header>
-					<Card.Title>Audio Settings</Card.Title>
-					<Card.Description>Adjust volume for game sounds</Card.Description>
+					<Card.Title>{$_('settings.audio_settings.title')}</Card.Title>
+					<Card.Description>{$_('settings.audio_settings.description')}</Card.Description>
 				</Card.Header>
 				<Card.Content class="space-y-4">
 					<div class="space-y-3">
 						<div class="flex items-center justify-between">
-							<Label class="text-base font-medium">Volume</Label>
+							<Label class="text-base font-medium"
+								>{$_('settings.audio_settings.volume_label')}</Label
+							>
 							<div class="flex items-center gap-2">
 								<Button variant="ghost" size="sm" onclick={toggleMute} class="h-8 w-8 p-0">
 									{#if isMuted}
@@ -570,7 +599,7 @@
 							</div>
 						{/if}
 						<p class="text-muted-foreground text-xs">
-							Controls all game sounds including effects and background audio
+							{$_('settings.audio_settings.volume_hint')}
 						</p>
 					</div>
 				</Card.Content>
@@ -578,15 +607,17 @@
 
 			<Card.Root>
 				<Card.Header>
-					<Card.Title>Notification Settings</Card.Title>
-					<Card.Description>Control how you receive notifications</Card.Description>
+					<Card.Title>{$_('settings.notification_settings.title')}</Card.Title>
+					<Card.Description>{$_('settings.notification_settings.description')}</Card.Description>
 				</Card.Header>
 				<Card.Content class="space-y-4">
 					<div class="flex items-center justify-between rounded-lg border p-4">
 						<div class="space-y-1">
-							<h4 class="text-sm font-medium">Mentions</h4>
+							<h4 class="text-sm font-medium">
+								{$_('settings.notification_settings.mentions_title')}
+							</h4>
 							<p class="text-muted-foreground text-xs">
-								Receive notifications when someone @mentions you in comments
+								{$_('settings.notification_settings.mentions_description')}
 							</p>
 						</div>
 						<Switch checked={!disableMentions} onCheckedChange={toggleDisableMentions} />
@@ -596,16 +627,14 @@
 
 			<Card.Root>
 				<Card.Header>
-					<Card.Title>Blocked Users</Card.Title>
-					<Card.Description
-						>Users you've blocked won't appear in comments and can't send you notifications</Card.Description
-					>
+					<Card.Title>{$_('settings.blocked_users.title')}</Card.Title>
+					<Card.Description>{$_('settings.blocked_users.description')}</Card.Description>
 				</Card.Header>
 				<Card.Content class="space-y-2">
 					{#if blockedLoading}
-						<p class="text-muted-foreground text-sm">Loading...</p>
+						<p class="text-muted-foreground text-sm">{$_('settings.blocked_users.loading')}</p>
 					{:else if blockedUsers.length === 0}
-						<p class="text-muted-foreground text-sm">You haven't blocked anyone.</p>
+						<p class="text-muted-foreground text-sm">{$_('settings.blocked_users.no_blocked')}</p>
 					{:else}
 						{#each paginatedBlocked as blocked}
 							<div class="flex items-center justify-between rounded-lg border p-3">
@@ -620,7 +649,9 @@
 									onclick={() => unblockUser(blocked.username)}
 									disabled={unblockingUser === blocked.username}
 								>
-									{unblockingUser === blocked.username ? 'Unblocking...' : 'Unblock'}
+									{unblockingUser === blocked.username
+										? $_('settings.blocked_users.unblocking_button')
+										: $_('settings.blocked_users.unblock_button')}
 								</Button>
 							</div>
 						{/each}
@@ -671,17 +702,16 @@
 
 			<Card.Root>
 				<Card.Header>
-					<Card.Title>Data & Privacy</Card.Title>
-					<Card.Description>Manage your personal data and account</Card.Description>
+					<Card.Title>{$_('settings.data_privacy.title')}</Card.Title>
+					<Card.Description>{$_('settings.data_privacy.description')}</Card.Description>
 				</Card.Header>
 				<Card.Content class="space-y-4">
 					<div class="space-y-4">
 						<div class="flex items-center justify-between rounded-lg border p-4">
 							<div class="space-y-1">
-								<h4 class="text-sm font-medium">Download Your Data</h4>
+								<h4 class="text-sm font-medium">{$_('settings.data_privacy.download_title')}</h4>
 								<p class="text-muted-foreground text-xs">
-									Export a complete copy of your account data including transactions, bets, and
-									profile information.
+									{$_('settings.data_privacy.download_description')}
 								</p>
 							</div>
 							<Button
@@ -692,7 +722,9 @@
 								class="ml-4"
 							>
 								<HugeiconsIcon icon={Download01Icon} class="h-4 w-4" />
-								{isDownloading ? 'Downloading...' : 'Download Data'}
+								{isDownloading
+									? $_('settings.data_privacy.downloading_button')
+									: $_('settings.data_privacy.download_button')}
 							</Button>
 						</div>
 
@@ -700,10 +732,11 @@
 							class="border-destructive/20 bg-destructive/5 flex items-center justify-between rounded-lg border p-4"
 						>
 							<div class="space-y-1">
-								<h4 class="text-destructive text-sm font-medium">Delete Account</h4>
+								<h4 class="text-destructive text-sm font-medium">
+									{$_('settings.data_privacy.delete_title')}
+								</h4>
 								<p class="text-muted-foreground text-xs">
-									Schedule your account for permanent deletion. This will anonymize your data while
-									preserving transaction records for compliance.
+									{$_('settings.data_privacy.delete_description')}
 								</p>
 							</div>
 							<Button
@@ -713,7 +746,7 @@
 								class="ml-4"
 							>
 								<HugeiconsIcon icon={Delete01Icon} class="h-4 w-4" />
-								Delete Account
+								{$_('settings.data_privacy.delete_button')}
 							</Button>
 						</div>
 					</div>
@@ -726,41 +759,51 @@
 <Dialog.Root bind:open={deleteDialogOpen}>
 	<Dialog.Content class="sm:max-w-md">
 		<Dialog.Header>
-			<Dialog.Title class="text-destructive">Delete Account</Dialog.Title>
+			<Dialog.Title class="text-destructive"
+				>{$_('settings.data_privacy.delete_modal_title')}</Dialog.Title
+			>
 			<Dialog.Description>
-				This action cannot be undone. Your account will be scheduled for permanent deletion, after a
-				grace period of <span class="font-semibold">14 days</span>. Your data will be anonymized.
+				{@html $_('settings.data_privacy.delete_modal_description', {
+					values: { days: '14' }
+				}).replace(/{{days}}/g, '<span class="font-semibold">14</span>')}
 			</Dialog.Description>
 		</Dialog.Header>
 		<div class="space-y-4">
 			<div class="bg-destructive/10 rounded-lg p-4">
-				<h4 class="mb-2 text-sm font-medium">What happens when you delete your account:</h4>
+				<h4 class="mb-2 text-sm font-medium">{$_('settings.data_privacy.delete_what_happens')}</h4>
 				<ul class="text-muted-foreground space-y-1 text-xs">
-					<li>• Your profile information will be permanently removed</li>
-					<li>• You will be logged out from all devices</li>
-					<li>• Your comments will be anonymized</li>
-					<li>• Transaction history will be preserved for compliance (anonymized)</li>
-					<li>• You will not be able to recover this account</li>
+					<li>{$_('settings.data_privacy.delete_list_profile')}</li>
+					<li>{$_('settings.data_privacy.delete_list_logout')}</li>
+					<li>{$_('settings.data_privacy.delete_list_anonymize')}</li>
+					<li>{$_('settings.data_privacy.delete_list_transactions')}</li>
+					<li>{$_('settings.data_privacy.delete_list_recovery')}</li>
 				</ul>
 			</div>
 			<div class="space-y-2">
-				<Label for="delete-confirmation">Type "DELETE MY ACCOUNT" to confirm:</Label>
+				<Label for="delete-confirmation"
+					>{$_('settings.data_privacy.delete_confirmation_label')}</Label
+				>
 				<Input
 					id="delete-confirmation"
 					bind:value={deleteConfirmationText}
-					placeholder="DELETE MY ACCOUNT"
+					placeholder={$_('settings.data_privacy.delete_confirmation_placeholder')}
 					class="font-mono"
 				/>
 			</div>
 		</div>
 		<Dialog.Footer>
-			<Button variant="outline" onclick={() => (deleteDialogOpen = false)}>Cancel</Button>
+			<Button variant="outline" onclick={() => (deleteDialogOpen = false)}
+				>{$_('settings.data_privacy.delete_cancel_button')}</Button
+			>
 			<Button
 				variant="destructive"
 				onclick={deleteAccount}
-				disabled={isDeleting || deleteConfirmationText !== 'DELETE MY ACCOUNT'}
+				disabled={isDeleting ||
+					deleteConfirmationText !== $_('settings.data_privacy.delete_confirmation_placeholder')}
 			>
-				{isDeleting ? 'Deleting...' : 'Delete Account'}
+				{isDeleting
+					? $_('settings.data_privacy.deleting_button')
+					: $_('settings.data_privacy.delete_confirm_button')}
 			</Button>
 		</Dialog.Footer>
 	</Dialog.Content>

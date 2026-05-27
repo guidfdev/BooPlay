@@ -460,5 +460,100 @@ export default {
 				denied: 'Solicitação recusada'
 			}
 		}
+	},
+	settings: {
+		title: 'Configurações',
+		seo_description:
+			'Gerenciar as configurações da sua conta Booplay, informações de perfil, preferências de áudio e opções de privacidade.',
+		seo_keywords:
+			'configurações de conta de jogo, configurações de perfil de jogo, configurações de privacidade, configurações de áudio de jogo',
+		not_logged_in: 'Você precisa estar conectado para visualizar suas configurações',
+		sign_in_button: 'Fazer Login',
+		profile_settings: {
+			title: 'Configurações de Perfil',
+			description: 'Atualize suas informações de perfil',
+			display_name_label: 'Nome de Exibição',
+			display_name_required: 'Nome de exibição é obrigatório.',
+			display_name_min: 'Nome de exibição deve ter pelo menos 2 caracteres.',
+			display_name_max: 'Nome de exibição deve ter no máximo 50 caracteres.',
+			username_label: 'Usuário',
+			username_hint: 'Apenas letras, números e sublinhados. 3–30 caracteres.',
+			username_checking: 'Verificando…',
+			username_taken: 'Já Utilizado',
+			bio_label: 'Bio',
+			bio_placeholder: 'Conte-nos sobre você',
+			timezone_label: 'Fuso Horário',
+			avatar_change_text: 'Alterar',
+			save_changes_button: 'Salvar Alterações',
+			saving_button: 'Salvando…',
+			success_message: 'Configurações atualizadas com sucesso!',
+			success_refresh: 'Atualizar',
+			error_message: 'Falha ao atualizar configurações',
+			unexpected_error: 'Ocorreu um erro inesperado',
+			profile_picture_large: 'Foto de perfil deve ser menor que 1MB',
+			invalid_image: 'Selecione um arquivo de imagem válido'
+		},
+		audio_settings: {
+			title: 'Configurações de Áudio',
+			description: 'Ajuste o volume dos sons do jogo',
+			volume_label: 'Volume',
+			volume_hint: 'Controla todos os sons do jogo, incluindo efeitos e áudio de fundo'
+		},
+		notification_settings: {
+			title: 'Configurações de Notificações',
+			description: 'Controle como você recebe notificações',
+			mentions_title: 'Menções',
+			mentions_description: 'Receba notificações quando alguém o @mencionar nos comentários'
+		},
+		blocked_users: {
+			title: 'Usuários Bloqueados',
+			description:
+				'Usuários que você bloqueou não aparecerão em comentários e não poderão enviar notificações',
+			loading: 'Carregando...',
+			no_blocked: 'Você não bloqueou ninguém.',
+			unblock_button: 'Desbloquear',
+			unblocking_button: 'Desbloqueando...',
+			unblock_success: 'Desbloqueado @{{username}}',
+			unblock_failed: 'Falha ao desbloquear usuário',
+			load_failed: 'Falha ao carregar usuários bloqueados'
+		},
+		data_privacy: {
+			title: 'Dados e Privacidade',
+			description: 'Gerenciar seus dados pessoais e conta',
+			download_title: 'Baixar Seus Dados',
+			download_description:
+				'Exporte uma cópia completa dos dados da sua conta, incluindo transações, apostas e informações de perfil.',
+			download_button: 'Baixar Dados',
+			downloading_button: 'Baixando...',
+			download_started: 'Seu download de dados começou',
+			download_size_confirm:
+				'Sua exportação de dados é {{size}}MB. Isso pode levar um tempo para baixar. Continuar?',
+			download_failed: 'Falha ao iniciar download de dados: {{error}}',
+			delete_title: 'Deletar Conta',
+			delete_description:
+				'Agendar sua conta para exclusão permanente. Isso anonimizará seus dados enquanto preserva registros de transações para conformidade.',
+			delete_button: 'Deletar Conta',
+			delete_modal_title: 'Deletar Conta',
+			delete_modal_description:
+				'Esta ação não pode ser desfeita. Sua conta será agendada para exclusão permanente, após um período de carência de {{days}} dias. Seus dados serão anonimizados.',
+			delete_what_happens: 'O que acontece quando você deleta sua conta:',
+			delete_list_profile: '• Suas informações de perfil serão removidas permanentemente',
+			delete_list_logout: '• Você será desconectado de todos os dispositivos',
+			delete_list_anonymize: '• Seus comentários serão anonimizados',
+			delete_list_transactions:
+				'• Histórico de transações será preservado para conformidade (anonimizado)',
+			delete_list_recovery: '• Você não poderá recuperar esta conta',
+			delete_confirmation_label: 'Digite "DELETAR MINHA CONTA" para confirmar:',
+			delete_confirmation_placeholder: 'DELETAR MINHA CONTA',
+			delete_cancel_button: 'Cancelar',
+			delete_confirm_button: 'Deletar Conta',
+			deleting_button: 'Deletando...',
+			delete_confirm_type_error: 'Digite "DELETAR MINHA CONTA" para confirmar',
+			delete_scheduled: 'Exclusão da conta agendada com sucesso',
+			delete_already_scheduled: 'Exclusão da conta já agendada',
+			delete_already_scheduled_desc:
+				'Você já solicitou a exclusão da conta. Entre em contato com o suporte para cancelar.',
+			delete_failed: 'Falha ao deletar conta: {{error}}'
+		}
 	}
 } satisfies typeof en;
