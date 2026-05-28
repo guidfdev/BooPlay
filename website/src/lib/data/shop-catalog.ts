@@ -253,7 +253,8 @@ export const NAME_COLOR_CATALOG: NameColorItem[] = [
 		rarity: 'light',
 		price: 9000,
 		classes: 'text-violet-800',
-		style: 'text-shadow: 0px 0px 10px var(--foreground); text-shadow: 0px 0px 7px var(--color-purple-950), 0px 0px 10px var(--color-purple-900), 0px 0px 14px var(--color-purple-800);'
+		style:
+			'text-shadow: 0px 0px 10px var(--foreground); text-shadow: 0px 0px 7px var(--color-purple-950), 0px 0px 10px var(--color-purple-900), 0px 0px 14px var(--color-purple-800);'
 	},
 
 	// Dark
@@ -353,8 +354,7 @@ export const NAME_COLOR_CATALOG: NameColorItem[] = [
 		rarity: 'dark',
 		price: 8000,
 		classes: 'bg-clip-text text-transparent animate-diamond-shimmer',
-		style:
-			'background-image: linear-gradient(135deg, #000, #fff); text-shadow: 0px 0px 6px #000;'
+		style: 'background-image: linear-gradient(135deg, #000, #fff); text-shadow: 0px 0px 6px #000;'
 	}
 ];
 
