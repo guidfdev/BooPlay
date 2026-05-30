@@ -104,6 +104,10 @@ Before you begin, make sure you have the following installed:
    DISCORD_CLIENT_ID=your_discord_client_id
    DISCORD_CLIENT_SECRET=your_discord_client_secret
 
+   # --- Google OAuth ---
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+
    # --- Websocket ---
    PUBLIC_WEBSOCKET_URL=ws://localhost:8080      # URL of the websocket server
 

@@ -377,7 +377,8 @@ export default {
 			description:
 				"Choose a service to sign in with. Your account will be created automatically if you don't have one.",
 			services: {
-				discord: 'Continue with Discord'
+				discord: 'Continue with Discord',
+				google: 'Continue with Google'
 			},
 			terms: ['By continuing, you agree to our', 'Terms of Service', 'and', 'Privacy Policy']
 		},

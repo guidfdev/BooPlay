@@ -33,7 +33,7 @@
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
 	let lastUpdated = $state<Date>(new Date());
-	const isLiveUpdatesEnabled = $state(true);
+	let isLiveUpdatesEnabled = $state(true);
 	let isFullscreen = $state(false);
 	let fullscreenContainer: HTMLDivElement;
 

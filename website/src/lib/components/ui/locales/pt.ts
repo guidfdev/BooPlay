@@ -527,7 +527,8 @@ export default {
 			description:
 				'Escolha um serviço para logar com. Sua conta será criada imediatamente se não tiver uma.',
 			services: {
-				discord: 'Continuar com Discord'
+				discord: 'Continuar com Discord',
+				google: 'Continuar com Google'
 			},
 			terms: [
 				'Ao continuar, você concorda com nossos',
@@ -536,7 +537,7 @@ export default {
 				'Políticas de Privacidade'
 			]
 		},
-		portfolio: ['Você precisa estar logado para ver seu portfólio', 'Fazer Login'],
+		portfolio: ['Você precisa estar logado para ver seu portfólio', 'Fazer Login.'],
 		sign_in: 'Fazer Login',
 		trade: 'Você precisa estar logado para negociar.'
 	},
